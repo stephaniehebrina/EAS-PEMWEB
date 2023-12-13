@@ -1,34 +1,28 @@
 <template>
-    <div>
-      <h2>Join Channel</h2>
-      <form @submit.prevent="joinChannel">
-        <div class="form-group">
-          <label for="channelCode">Channel Code</label>
-          <input type="text" id="channelCode" v-model="channelCode" required>
-        </div>
-        <button type="submit">Join</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        channelCode: ''
-      };
-    },
-    methods: {
-      joinChannel() {
-        // Lakukan proses join channel di sini
-        // Misalnya dengan mengirim data ke server
-        // Anda dapat menggunakan axios atau library HTTP lainnya untuk mengirim permintaan HTTP
-  
-        // Setelah berhasil join channel, arahkan pengguna ke halaman channel yang telah di-join
-        this.$router.push('/channel/' + this.channelCode);
-      }
-    }
-  };
-  </script>
+  <div>
+    <h1 class="text-2xl font-bold mb-6">Join Channel</h1>
+    <p>Channel Name: {{ channelName }}</p>
+    <form @submit.prevent="joinChannel">
+      <div class="mb-4">
+        <label for="channelName" class="block text-gray-700 text-sm font-bold mb-2">Channel Name</label>
+        <input v-model="channelName" type="text" id="channelName" name="channelName" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500">
+      </div>
+      <button type="submit" class="bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Join</button>
+    </form>
+  </div>
+</template>
 
-  
+<script>
+export default {
+  data() {
+    return {
+      channelName: ''
+    };
+  },
+  methods: {
+    joinChannel() {
+      // Logika untuk join channel di sini
+    }
+  }
+};
+</script>

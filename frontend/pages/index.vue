@@ -1,6 +1,7 @@
 <template>
     <div>
       <navbar />
+      <home />
       <!-- <HomeView /> -->
       <!-- <AboutView /> -->
       <!-- < BlogView /> -->
@@ -12,6 +13,8 @@
   // import AboutView from "@/pages/AboutView.vue";
   // import BlogView from "@/pages/BlogView.vue"; 
   import NavbarView from "@/components/navbar.vue";
+  import Home from "@/components/home.vue";
+
 //   import HomeView from "@/components/HomeView.vue";
 //   import FooterView from "@/components/FooterView.vue";
   

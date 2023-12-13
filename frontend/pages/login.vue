@@ -1,90 +1,81 @@
 <template>
-    <div class="login-container">
-      <div class="login-box">
-        <h2>Halaman Login</h2>
-        <form @submit.prevent="login">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" v-model="username" required>
+  <div class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="max-w-md w-full">
+      <div class="bg-white p-8 shadow-lg rounded-lg">
+        <h1 class="text-2xl font-bold mb-6">Login</h1>
+        <button v-if="isLoggedIn" @click="logout" class="w-full bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</button>
+        <form v-else @submit.prevent="login">
+          <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input 
+              id="email" 
+              type="email" 
+              v-model="email"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              placeholder="Email"
+              required
+            >
           </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" v-model="password" required>
+          <div class="mb-4">
+            <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+            <input 
+              id="password" 
+              type="password" 
+              v-model="password" 
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+              placeholder="Password"
+              required
+            >
           </div>
-          <button type="submit">Masuk</button>
+          <button type="submit" class="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Login</button>
         </form>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        username: "",
-        password: ""
-      };
-    },
-    methods: {
-      login() {
-        // Lakukan proses login di sini
-        // Misalnya dengan mengirim data ke server atau memvalidasi di sisi klien
-        // Anda dapat menggunakan axios atau library HTTP lainnya untuk mengirim permintaan HTTP
-        // Setelah login berhasil, Anda dapat mengarahkan pengguna ke halaman lain
-      }
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const email = ref('');
+const password = ref('');
+const loginError = ref(false);
+const router = useRouter();
+
+const login = async () => {
+  try {
+    const req = await fetch("http://localhost:8000/api/account/login/", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
+    });
+
+    if (req.status === 200) {
+      const res = await req.json();
+      router.push("/channel");
+    } else {
+      loginError.value = true;
     }
-  };
-  </script>
-  
-  <style>
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  } catch (error) {
+    console.error("Login failed:", error);
+    loginError.value = true;
   }
-  
-  .login-box {
-    width: 300px;
-    padding: 20px;
-    background-color: #f2f2f2;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  </style>
+};
+
+const isLoggedIn = ref(false);
+
+const logout = () => {
+  isLoggedIn.value = false;
+};
+</script>
+
+<style>
+/* Other styles here */
+</style>
