@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       menuItems: [
-        { label: "Login Here!", url: "/login" }
+        { label: "Register first!", url: "/regist" }
       ]
     };
   }
